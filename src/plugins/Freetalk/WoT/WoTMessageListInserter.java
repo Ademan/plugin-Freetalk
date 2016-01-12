@@ -36,6 +36,7 @@ import freenet.node.RequestClient;
 import freenet.node.RequestStarter;
 import freenet.support.Logger;
 import freenet.support.api.Bucket;
+import freenet.support.api.RandomAccessBucket;
 import freenet.support.io.Closer;
 import freenet.support.io.NativeThread;
 
@@ -137,7 +138,7 @@ public final class WoTMessageListInserter extends MessageListInserter {
 	 * You have to synchronize on this <code>WoTMessageListInserter</code> and then on the <code>WoTMessageManager</code> when using this function.
 	 */
 	private void insertMessageList(WoTOwnMessageList list) throws TransformerException, ParserConfigurationException, NoSuchMessageException, IOException, InsertException {
-		Bucket tempB = mTBF.makeBucket(4096); /* TODO: set to a reasonable value */
+		RandomAccessBucket tempB = mTBF.makeBucket(4096); /* TODO: set to a reasonable value */
 		OutputStream os = null;
 		
 		try {
@@ -154,7 +155,7 @@ public final class WoTMessageListInserter extends MessageListInserter {
 			InsertBlock ib = new InsertBlock(tempB, null, list.getInsertURI());
 			InsertContext ictx = mClient.getInsertContext(true);
 
-			ClientPutter pu = mClient.insert(ib, false, null, false, ictx, this, RequestStarter.INTERACTIVE_PRIORITY_CLASS);
+			ClientPutter pu = mClient.insert(ib, null, false, ictx, this, RequestStarter.INTERACTIVE_PRIORITY_CLASS);
 			addInsert(pu);
 			tempB = null;
 

@@ -37,6 +37,7 @@ import freenet.node.RequestClient;
 import freenet.node.RequestStarter;
 import freenet.support.Logger;
 import freenet.support.api.Bucket;
+import freenet.support.api.RandomAccessBucket;
 import freenet.support.io.Closer;
 import freenet.support.io.NativeThread;
 
@@ -144,7 +145,7 @@ public final class WoTMessageInserter extends MessageInserter {
 	 * You have to synchronize on this <code>WoTMessageInserter</code> when using this function.
 	 */
 	protected void insertMessage(OwnMessage m) throws InsertException, IOException, TransformerException, ParserConfigurationException {
-		Bucket tempB = mTBF.makeBucket(2048 + m.getText().length()); /* TODO: set to a reasonable value */
+		RandomAccessBucket tempB = mTBF.makeBucket(2048 + m.getText().length()); /* TODO: set to a reasonable value */
 		OutputStream os = null;
 		
 		try {
@@ -157,7 +158,7 @@ public final class WoTMessageInserter extends MessageInserter {
 			InsertBlock ib = new InsertBlock(tempB, null, m.getInsertURI());
 			InsertContext ictx = mClient.getInsertContext(true);
 
-			ClientPutter pu = mClient.insert(ib, false, null, false, ictx, this, RequestStarter.INTERACTIVE_PRIORITY_CLASS);
+			ClientPutter pu = mClient.insert(ib, null, false, ictx, this, RequestStarter.INTERACTIVE_PRIORITY_CLASS);
 			addInsert(pu);
 			mPutterMessageIDs.put(pu, m.getID());
 			mMessageIDs.add(m.getID());
@@ -181,7 +182,7 @@ public final class WoTMessageInserter extends MessageInserter {
 		for(Map.Entry<BaseClientPutter, String> entry : mPutterMessageIDs.entrySet()) {
 			if(messageID.equals(entry.getValue())) {
 				// The following will call onFailure which removes the request from mMessageIDs / mPutterMessageIDs
-				entry.getKey().cancel(null, mClientContext);
+				entry.getKey().cancel(mClientContext);
 				break;
 			}
 		}
