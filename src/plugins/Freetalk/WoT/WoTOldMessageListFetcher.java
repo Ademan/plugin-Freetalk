@@ -221,7 +221,7 @@ public final class WoTOldMessageListFetcher extends TransferThread implements Me
 	}
 
 	@Override
-	public synchronized void onSuccess(FetchResult result, ClientGetter state, ObjectContainer container) {
+	public synchronized void onSuccess(FetchResult result, ClientGetter state) {
 		Logger.normal(this, "Fetched MessageList: " + state.getURI());
 
 		Bucket bucket = null;
@@ -270,7 +270,7 @@ public final class WoTOldMessageListFetcher extends TransferThread implements Me
 	}
 
 	@Override
-	public synchronized void onFailure(FetchException e, ClientGetter state, ObjectContainer container) {
+	public synchronized void onFailure(FetchException e, ClientGetter state) {
 		try {
 			switch(e.getMode()) {
 				case FetchException.DATA_NOT_FOUND:
@@ -326,23 +326,19 @@ public final class WoTOldMessageListFetcher extends TransferThread implements Me
 	/* Not needed functions, called for inserts */
 
 	@Override
-	public void onGeneratedURI(FreenetURI uri, BaseClientPutter state, ObjectContainer container) { }
+	public void onGeneratedURI(FreenetURI uri, BaseClientPutter state) { }
 	
 	@Override
-	public void onSuccess(BaseClientPutter state, ObjectContainer container) { }
+	public void onSuccess(BaseClientPutter state) { }
 	
 	@Override
-	public void onFailure(InsertException e, BaseClientPutter state, ObjectContainer container) { }
+	public void onFailure(InsertException e, BaseClientPutter state) { }
 	
 	@Override
-	public void onFetchable(BaseClientPutter state, ObjectContainer container) { }
+	public void onFetchable(BaseClientPutter state) { }
 
 	@Override
-	public void onMajorProgress(ObjectContainer container) { }
-
-	@Override
-	public void onGeneratedMetadata(Bucket metadata, BaseClientPutter state,
-			ObjectContainer container) {
+	public void onGeneratedMetadata(Bucket metadata, BaseClientPutter state) {
 		metadata.free();
 		throw new UnsupportedOperationException();
 	}

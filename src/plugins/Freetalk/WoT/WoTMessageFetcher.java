@@ -200,7 +200,7 @@ public final class WoTMessageFetcher extends MessageFetcher {
 	}
 
 	@Override
-	public synchronized void onSuccess(FetchResult result, ClientGetter state, ObjectContainer container) {
+	public synchronized void onSuccess(FetchResult result, ClientGetter state) {
 		Logger.normal(this, "Fetched message: " + state.getURI());
 		final String messageListID = mMessageLists.get(state);
 		removeFetch(state); // This must be called before we call fetchMessages() because fetchMessages has a parallel fetch count limit.
@@ -250,7 +250,7 @@ public final class WoTMessageFetcher extends MessageFetcher {
 	}
 	
 	@Override
-	public synchronized void onFailure(FetchException e, ClientGetter state, ObjectContainer container) {
+	public synchronized void onFailure(FetchException e, ClientGetter state) {
 		final String messageListID = mMessageLists.get(state);
 		removeFetch(state); // This must be called before we call fetchMessages() because fetchMessages has a parallel fetch count limit.
 		
@@ -312,22 +312,18 @@ public final class WoTMessageFetcher extends MessageFetcher {
 	/* Not needed functions, called for inserts */
 
 	@Override
-	public void onGeneratedURI(FreenetURI uri, BaseClientPutter state, ObjectContainer container) { }
+	public void onGeneratedURI(FreenetURI uri, BaseClientPutter state) { }
 	
 	@Override
-	public void onSuccess(BaseClientPutter state, ObjectContainer container) { }
+	public void onSuccess(BaseClientPutter state) { }
 	
 	@Override
-	public void onFailure(InsertException e, BaseClientPutter state, ObjectContainer container) { }
+	public void onFailure(InsertException e, BaseClientPutter state) { }
 	
 	@Override
-	public void onFetchable(BaseClientPutter state, ObjectContainer container) { }
+	public void onFetchable(BaseClientPutter state) { }
 
 	@Override
-	public void onMajorProgress(ObjectContainer container) { }
-
-	@Override
-	public void onGeneratedMetadata(Bucket metadata, BaseClientPutter state,
-			ObjectContainer container) { }
+	public void onGeneratedMetadata(Bucket metadata, BaseClientPutter state) { }
 
 }
