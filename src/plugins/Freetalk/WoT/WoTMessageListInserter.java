@@ -185,7 +185,7 @@ public final class WoTMessageListInserter extends MessageListInserter {
 	@Override
 	public synchronized void onFailure(InsertException e, BaseClientPutter state) {
 		try {
-			if(e.getMode() == InsertException.COLLISION) {
+			if(e.getMode() == InsertException.InsertExceptionMode.COLLISION) {
 				Logger.warning(this, "WoTOwnMessageList insert collided, trying to insert with higher index ...");
 				try {
 					synchronized(mMessageManager) {

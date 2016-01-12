@@ -204,7 +204,7 @@ public final class WoTMessageInserter extends MessageInserter {
 	@Override
 	public synchronized void onFailure(InsertException e, BaseClientPutter state) {
 		try {
-			if(e.getMode() == InsertException.CANCELLED)
+			if(e.getMode() == InsertException.InsertExceptionMode.CANCELLED)
 				Logger.normal(this, "Message insert cancelled for " + state.getURI());
 			else if(e.isFatal())
 				Logger.error(this, "Message insert failed", e);
