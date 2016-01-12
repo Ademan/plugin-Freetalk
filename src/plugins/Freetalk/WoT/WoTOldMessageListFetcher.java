@@ -322,6 +322,12 @@ public final class WoTOldMessageListFetcher extends TransferThread implements Me
 	protected synchronized void abortAllTransfers() {
 		super.abortAllTransfers();
 	}
+
+	@Override
+	public RequestClient getRequestClient() {
+		return mRequestClient;
+	}
+
 	
 	/* Not needed functions, called for inserts */
 
@@ -333,6 +339,9 @@ public final class WoTOldMessageListFetcher extends TransferThread implements Me
 	
 	@Override
 	public void onFailure(InsertException e, BaseClientPutter state) { }
+
+	@Override
+	public void onResume(ClientContext context) { }
 	
 	@Override
 	public void onFetchable(BaseClientPutter state) { }

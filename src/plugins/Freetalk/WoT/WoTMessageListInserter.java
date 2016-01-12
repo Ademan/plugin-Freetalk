@@ -29,8 +29,10 @@ import freenet.client.InsertException;
 import freenet.client.async.BaseClientPutter;
 import freenet.client.async.ClientGetter;
 import freenet.client.async.ClientPutter;
+import freenet.client.async.ClientContext;
 import freenet.keys.FreenetURI;
 import freenet.node.Node;
+import freenet.node.RequestClient;
 import freenet.node.RequestStarter;
 import freenet.support.Logger;
 import freenet.support.api.Bucket;
@@ -49,6 +51,8 @@ public final class WoTMessageListInserter extends MessageListInserter {
 	private final WoTMessageManager mMessageManager;
 	
 	private final Random mRandom;
+
+	private final RequestClient requestClient;
 	
 	private final WoTMessageListXML mXML;
 	
@@ -67,6 +71,7 @@ public final class WoTMessageListInserter extends MessageListInserter {
 		super(myNode, myClient, myName, myIdentityManager, myMessageManager);
 		mMessageManager = myMessageManager;
 		mRandom = mNode.fastWeakRandom;
+		requestClient = myMessageManager.mRequestClient;
 		mXML = myMessageListXML;
 	}
 	
@@ -221,6 +226,12 @@ public final class WoTMessageListInserter extends MessageListInserter {
 	protected synchronized void abortAllTransfers() {
 		super.abortAllTransfers();
 	}
+	
+	@Override
+	public RequestClient getRequestClient() {
+		return requestClient;
+	}
+
 
 	/* Not needed functions*/
 	
@@ -229,6 +240,9 @@ public final class WoTMessageListInserter extends MessageListInserter {
 	
 	@Override
 	public void onFailure(FetchException e, ClientGetter state) { }
+	
+	@Override
+	public void onResume(ClientContext context) { }
 	
 	@Override
 	public void onGeneratedURI(FreenetURI uri, BaseClientPutter state) { }

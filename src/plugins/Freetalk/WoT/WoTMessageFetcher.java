@@ -27,6 +27,7 @@ import freenet.client.HighLevelSimpleClient;
 import freenet.client.InsertException;
 import freenet.client.async.BaseClientPutter;
 import freenet.client.async.ClientGetter;
+import freenet.client.async.ClientContext;
 import freenet.keys.FreenetURI;
 import freenet.node.Node;
 import freenet.node.RequestClient;
@@ -308,6 +309,11 @@ public final class WoTMessageFetcher extends MessageFetcher {
 		mMessages.remove(g.getURI());
 	}
 	
+	@Override
+	public RequestClient getRequestClient() {
+		return requestClient;
+	}
+
 	
 	/* Not needed functions, called for inserts */
 
@@ -319,6 +325,9 @@ public final class WoTMessageFetcher extends MessageFetcher {
 	
 	@Override
 	public void onFailure(InsertException e, BaseClientPutter state) { }
+
+	@Override
+	public void onResume(ClientContext context) { }
 	
 	@Override
 	public void onFetchable(BaseClientPutter state) { }

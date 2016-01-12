@@ -30,8 +30,10 @@ import freenet.client.InsertException;
 import freenet.client.async.BaseClientPutter;
 import freenet.client.async.ClientGetter;
 import freenet.client.async.ClientPutter;
+import freenet.client.async.ClientContext;
 import freenet.keys.FreenetURI;
 import freenet.node.Node;
+import freenet.node.RequestClient;
 import freenet.node.RequestStarter;
 import freenet.support.Logger;
 import freenet.support.api.Bucket;
@@ -59,6 +61,8 @@ public final class WoTMessageInserter extends MessageInserter {
 	private final WoTMessageManager mMessageManager;
 	
 	private final Random mRandom;
+
+	private final RequestClient requestClient;
 	
 	/**
 	 * For each <code>BaseClientPutter</code> (= an object associated with an insert) this HashMap stores the ID of the message which is being
@@ -88,6 +92,7 @@ public final class WoTMessageInserter extends MessageInserter {
 		super(myNode, myClient, myName, myIdentityManager, myMessageManager);
 		mMessageManager = myMessageManager;
 		mRandom = mNode.fastWeakRandom;
+		requestClient = myMessageManager.mRequestClient;
 		mXML = myMessageXML;
 	}
 
@@ -230,6 +235,11 @@ public final class WoTMessageInserter extends MessageInserter {
 		super.removeInsert(p);
 		mMessageIDs.remove(mPutterMessageIDs.remove(p));
 	}
+	
+	@Override
+	public RequestClient getRequestClient() {
+		return requestClient;
+	}
 
 	
 	/* Not needed functions*/
@@ -240,6 +250,9 @@ public final class WoTMessageInserter extends MessageInserter {
 	@Override
 	public void onFailure(FetchException e, ClientGetter state) { }
 	
+	@Override
+	public void onResume(ClientContext context) { }
+
 	@Override
 	public void onGeneratedURI(FreenetURI uri, BaseClientPutter state) { }
 	
